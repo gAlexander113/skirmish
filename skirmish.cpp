@@ -1,5 +1,6 @@
 #include "skirmish.h"
 
-Skirmish::Skirmish()
+Skirmish::Skirmish(QWidget *pwgt)
+    : QGLWidget(pwgt)
 {
 }

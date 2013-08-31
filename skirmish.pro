@@ -1,4 +1,8 @@
 QT += opengl widgets
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    skirmish.cpp
+
+HEADERS += \
+    skirmish.h

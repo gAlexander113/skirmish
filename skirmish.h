@@ -1,10 +1,12 @@
 #ifndef SKIRMISH_H
 #define SKIRMISH_H
 
-class Skirmish
+#include <QGLWidget>
+
+class Skirmish : public QGLWidget
 {
 public:
-    Skirmish();
+    explicit Skirmish(QWidget *pwgt = 0);
 };
 
 #endif // SKIRMISH_H
