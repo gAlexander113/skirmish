@@ -5,8 +5,14 @@ Car::Car()
 {
     pos.x = 0.0;
     pos.y = 0.0;
-    state = neutral;
+    state = neutral;    
+}
 
+void Car::init()
+{
+    pos.x = 0.0;
+    pos.y = 0.0;
+    state = neutral;
 }
 
 void Car::paint_car()
@@ -30,6 +36,11 @@ void Car::set_state(const CarState &st)
     state = st;
 }
 
+Point Car::position() const
+{
+    return pos;
+}
+
 void Car::move_car()
 {
     switch (state)
@@ -40,8 +51,14 @@ void Car::move_car()
     case turn_right:
         pos.x += car_turn_speed;
         break;
-    case neutral:
+    case forward:
+        pos.y += car_forward_speed * section_size;
         break;
+    case back:
+        pos.y -= car_back_speed * section_size;
+        break;
+    case neutral:
+        break;        
     default:
         qDebug() << "unknown state in car state";
         break;

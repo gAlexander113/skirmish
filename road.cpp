@@ -7,13 +7,15 @@ Road::Road()
 {
 }
 
-Road::Road(bool random)
+Road::Road(TextureLoader *obj, bool random)
     : is_random(random)
 {
+    loader = obj;
 }
 
 void Road::init_road()
 {
+    road.clear();
     for (int i = 0; i < num_sections; ++i)
     {
         Point point;
@@ -27,16 +29,35 @@ void Road::init_road()
 
 void Road::paint_road()
 {
-    //    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glBegin(GL_QUAD_STRIP);
-    for (int i = 0; i < road.size(); i += 1)
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    GLuint texture = loader->texture(QString("road.jpg"));
+
+    if (texture < 0)
     {
+        qDebug() << "failed";
+        exit(-1);
+    }
+
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    glBegin(GL_QUAD_STRIP);
+    for (int i = 0, t = 0; i < road.size(); i += 1, t = i % 2)
+    {
+        if (!t)
+            glTexCoord2f(0.0, 1.0);
+        else
+            glTexCoord2f(0.0, 0.0);
         glVertex3f(road[i].x, road[i].y, 0.0);
-        //        glVertex3f(road[i+1].x, road[i+1].y, 0.0);
-        //        glVertex3f(road[i+1].x + road_width, road[i+1].y, 0.0);
+
+        if (!t)
+            glTexCoord2f(1.0, 1.0);
+        else
+            glTexCoord2f(1.0, 0.0);
         glVertex3f(road[i].x + road_width, road[i].y, 0.0);
     }
     glEnd();
+
+    this->update_road();
 }
 
 void Road::update_road()
@@ -91,4 +112,17 @@ void Road::update_road()
             break;
         }
     }
+
+}
+
+float Road::left_bound(const float y_pos)
+{
+    float x = 0;
+    for (int i = 0; i < road.size(); ++i)
+        if (road[i].y - y_pos < 1e-3)
+        {
+            x = road[i].x;
+            break;
+        }
+    return x;
 }

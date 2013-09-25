@@ -7,7 +7,8 @@ int main(int argc, char **argv)
 
     Skirmish window;
 
-    window.resize(300, 300);
+    window.init();
+    window.resize(640, 480);
     window.move(100, 100);
 
     window.show();
